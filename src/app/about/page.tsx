@@ -44,6 +44,11 @@ const certBadges = [
         id: "ifs-web-dev",
         image: "/certs/ifs-learning-achievement-advanced-web-development-c.png",
         link: "https://www.credly.com/badges/7ee43386-4760-424d-9c59-297ebf232f7b/public_url" // Update with real link if different
+    },
+    {
+        id: "aws-ai-generative-learning-cloud-quest",
+        image: "/certs/aws-cloud-quest-generative-ai-practitioner-training.png",
+        link: "https://www.credly.com/badges/17e80ef8-a3b9-4588-b71a-3a579129d2ad/public_url" // Update with real link if different
     }
 ];
 
@@ -82,6 +87,11 @@ const documentCerts = [
         id: "cert-new-2",
         image: "/certificates/tincel_trace.png",
         link: "/certificates/1766370970330.pdf"
+    },
+    {
+        id: "aws-cloud-quest-generative-ai-practitioner-training",
+        image: "/certificates/AWS_AI_Cloud_Quest.png",
+        link: "/certificates/f33b27e6-3cbf-4d33-b35b-16077af4f586.pdf"
     }
 ];
 
