@@ -2,13 +2,81 @@
 
 import { GlassCard } from "@/components/ui/GlassCard";
 import Link from "next/link";
-import { Calendar, Clock, ArrowRight } from "lucide-react";
+import { Calendar, Clock, ArrowRight, ChevronDown, Search } from "lucide-react";
+import { useState, useMemo } from "react";
 
 import { blogs } from "@/data/blogs";
+import { useEffect, useRef } from "react";
 
-const posts = blogs;
+type SortOption = "newest" | "oldest" | "readTimeAsc" | "readTimeDesc";
+
+const sortOptions: { value: SortOption; label: string }[] = [
+    { value: "newest", label: "Newest First" },
+    { value: "oldest", label: "Oldest First" },
+    { value: "readTimeAsc", label: "Read Time: Short → Long" },
+    { value: "readTimeDesc", label: "Read Time: Long → Short" },
+];
+
+// Helper to parse date string to Date object
+function parseDate(dateStr: string): Date {
+    return new Date(dateStr);
+}
+
+// Helper to extract minutes from readTime string (e.g., "2 min read" → 2)
+function parseReadTime(readTime: string): number {
+    const match = readTime.match(/(\d+)/);
+    return match ? parseInt(match[1], 10) : 0;
+}
 
 export default function BlogPage() {
+    const [sortBy, setSortBy] = useState<SortOption>("newest");
+    const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+    const [searchQuery, setSearchQuery] = useState("");
+    const dropdownRef = useRef<HTMLDivElement>(null);
+
+    // Close dropdown when clicking outside
+    useEffect(() => {
+        function handleClickOutside(event: MouseEvent) {
+            if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
+                setIsDropdownOpen(false);
+            }
+        }
+
+        document.addEventListener("mousedown", handleClickOutside);
+        return () => document.removeEventListener("mousedown", handleClickOutside);
+    }, []);
+
+    // Filter and sort posts
+    const filteredPosts = useMemo(() => {
+        // First filter by search query
+        let posts = blogs.filter((post) => {
+            if (!searchQuery.trim()) return true;
+            const query = searchQuery.toLowerCase();
+            return (
+                post.title.toLowerCase().includes(query) ||
+                post.excerpt.toLowerCase().includes(query) ||
+                post.tags.some((tag) => tag.toLowerCase().includes(query))
+            );
+        });
+
+        // Then sort
+        switch (sortBy) {
+            case "newest":
+                posts.sort((a, b) => parseDate(b.date).getTime() - parseDate(a.date).getTime());
+                break;
+            case "oldest":
+                posts.sort((a, b) => parseDate(a.date).getTime() - parseDate(b.date).getTime());
+                break;
+            case "readTimeAsc":
+                posts.sort((a, b) => parseReadTime(a.readTime) - parseReadTime(b.readTime));
+                break;
+            case "readTimeDesc":
+                posts.sort((a, b) => parseReadTime(b.readTime) - parseReadTime(a.readTime));
+                break;
+        }
+        return posts;
+    }, [sortBy, searchQuery]);
+
     return (
         <div className="min-h-screen py-20 px-4 sm:px-6 lg:px-8 max-w-4xl mx-auto">
             <div className="mb-16 text-center">
@@ -20,8 +88,69 @@ export default function BlogPage() {
                 </p>
             </div>
 
+            {/* Search and Sort Filters */}
+            <div className="mb-8 flex flex-col sm:flex-row gap-4 items-stretch sm:items-center justify-between">
+                {/* Search Input */}
+                <div className="relative flex-1 max-w-md">
+                    <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                        <Search size={18} className="text-gray-500" />
+                    </div>
+                    <input
+                        type="text"
+                        placeholder="Search posts..."
+                        value={searchQuery}
+                        onChange={(e) => setSearchQuery(e.target.value)}
+                        className="w-full pl-10 pr-4 py-2 bg-white/5 border border-white/10 rounded-lg text-sm font-mono text-white placeholder-gray-500 focus:outline-none focus:border-hacker-blue/50 focus:ring-1 focus:ring-hacker-blue/50 transition-all duration-300"
+                    />
+                </div>
+
+                {/* Results Count */}
+                <div className="text-sm font-mono text-gray-400">
+                    {filteredPosts.length} {filteredPosts.length === 1 ? 'post' : 'posts'} found
+                </div>
+
+                {/* Sort Dropdown */}
+                <div className="relative" ref={dropdownRef}>
+                    <button
+                        onClick={() => setIsDropdownOpen(!isDropdownOpen)}
+                        className="flex items-center gap-2 px-4 py-2 bg-white/5 border border-white/10 rounded-lg text-sm font-mono text-gray-300 hover:border-hacker-blue/50 hover:text-hacker-blue transition-all duration-300"
+                    >
+                        <span>Sort: {sortOptions.find(o => o.value === sortBy)?.label}</span>
+                        <ChevronDown size={16} className={`transition-transform duration-300 ${isDropdownOpen ? 'rotate-180' : ''}`} />
+                    </button>
+
+                    {isDropdownOpen && (
+                        <div className="absolute right-0 top-full mt-2 w-56 bg-black/90 border border-white/10 rounded-lg overflow-hidden shadow-[0_0_20px_rgba(0,240,255,0.1)] backdrop-blur-xl z-20">
+                            {sortOptions.map((option) => (
+                                <button
+                                    key={option.value}
+                                    onClick={() => {
+                                        setSortBy(option.value);
+                                        setIsDropdownOpen(false);
+                                    }}
+                                    className={`w-full px-4 py-3 text-left text-sm font-mono transition-all duration-200 ${
+                                        sortBy === option.value
+                                            ? 'bg-hacker-blue/20 text-hacker-blue border-l-2 border-hacker-blue'
+                                            : 'text-gray-400 hover:bg-white/5 hover:text-white'
+                                    }`}
+                                >
+                                    {option.label}
+                                </button>
+                            ))}
+                        </div>
+                    )}
+                </div>
+            </div>
+
             <div className="space-y-24">
-                {posts.map((post, index) => (
+                {filteredPosts.length === 0 ? (
+                    <div className="text-center py-16">
+                        <div className="text-6xl mb-4">🔍</div>
+                        <h3 className="text-xl font-mono text-white mb-2">No posts found</h3>
+                        <p className="text-gray-400 font-mono">Try adjusting your search query</p>
+                    </div>
+                ) : (
+                    filteredPosts.map((post, index) => (
                     <Link key={index} href={`/blog/${post.slug}`}>
                         <GlassCard className="group relative overflow-hidden rounded-2xl p-6 md:p-8 hover:border-hacker-blue transition-all duration-500 mb-8 border border-white/10 bg-white/5 hover:bg-white/[0.07]">
                             <div className="absolute top-0 left-0 w-full h-[2px] bg-gradient-to-r from-transparent via-hacker-blue/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
@@ -61,7 +190,8 @@ export default function BlogPage() {
                             </div>
                         </GlassCard>
                     </Link>
-                ))}
+                ))
+                )}
             </div>
         </div>
     );

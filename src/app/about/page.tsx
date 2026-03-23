@@ -4,6 +4,7 @@ import { GlassCard } from "@/components/ui/GlassCard";
 import { Terminal, Cpu, Shield, Award, Briefcase, ExternalLink, FileText } from "lucide-react";
 import Script from "next/script";
 import { useRef, useEffect } from "react";
+import { motion, useInView } from "framer-motion";
 
 const skills = [
     { category: "Exploit Development", items: ["Windows Internals", "Buffer Overflow", "Reverse Engineering", "C/C++", "Assembly", "GDB"] },
@@ -197,20 +198,7 @@ export default function AboutPage() {
                         <span className="text-hacker-red">&gt;</span> The Journey
                     </h2>
 
-                    <div className="space-y-8 border-l-2 border-white/10 pl-8 ml-4 relative">
-                        {journey.map((item, index) => (
-                            <div key={index} className="relative">
-                                <span className="absolute -left-[41px] top-1 w-5 h-5 rounded-full bg-black border-2 border-hacker-blue" />
-                                <div className="mb-1 flex items-center gap-3">
-                                    <span className="text-hacker-blue font-mono font-bold">{item.year}</span>
-                                    <h3 className="text-xl font-bold text-white">{item.title}</h3>
-                                </div>
-                                <p className="text-gray-400 leading-relaxed">
-                                    {item.description}
-                                </p>
-                            </div>
-                        ))}
-                    </div>
+                    <Timeline />
 
                     <div className="mt-12">
                         <h2 className="text-2xl font-bold mb-6 font-mono flex items-center gap-2">
@@ -275,6 +263,76 @@ export default function AboutPage() {
                     </div>
                 </div>
             </div>
+        </div>
+    );
+}
+
+// Timeline Item Component with scroll-triggered animations
+function TimelineItem({ item, index }: { item: typeof journey[0], index: number }) {
+    const ref = useRef(null);
+    const isInView = useInView(ref, {
+        once: true,
+        margin: "-100px"
+    });
+
+    // Check if this is the most recent item (index 0) - add pulsing effect
+    const isMostRecent = index === 0;
+
+    return (
+        <motion.div
+            ref={ref}
+            className="relative"
+            initial={{ opacity: 0, x: -30 }}
+            animate={isInView ? { opacity: 1, x: 0 } : { opacity: 0, x: -30 }}
+            transition={{
+                duration: 0.5,
+                delay: index * 0.1,
+                ease: "easeOut"
+            }}
+        >
+            {/* Animated dot that lights up with glow effect */}
+            <motion.span
+                className="absolute -left-[41px] top-1 w-5 h-5 rounded-full bg-black border-2 z-10"
+                initial={{ borderColor: "rgba(255,255,255,0.2)", scale: 0.8 }}
+                animate={isInView ? {
+                    borderColor: "#00f0ff",
+                    scale: 1,
+                    boxShadow: isMostRecent
+                        ? ["0 0 15px rgba(0,240,255,0.5)", "0 0 30px rgba(0,240,255,0.8)", "0 0 15px rgba(0,240,255,0.5)"]
+                        : "0 0 15px rgba(0,240,255,0.5)"
+                } : {}}
+                transition={{
+                    duration: 0.4,
+                    delay: 0.2,
+                    boxShadow: isMostRecent ? {
+                        repeat: Infinity,
+                        duration: 2
+                    } : {}
+                }}
+            />
+
+            {/* Content */}
+            <div className="mb-1 flex items-center gap-3">
+                <span className="text-hacker-blue font-mono font-bold">{item.year}</span>
+                <h3 className="text-xl font-bold text-white">{item.title}</h3>
+            </div>
+            <p className="text-gray-400 leading-relaxed">
+                {item.description}
+            </p>
+        </motion.div>
+    );
+}
+
+// Main Timeline Component with animated items
+function Timeline() {
+    const containerRef = useRef(null);
+
+    return (
+        <div ref={containerRef} className="space-y-8 pl-8 ml-4 relative">
+            {/* Timeline items */}
+            {journey.map((item, index) => (
+                <TimelineItem key={index} item={item} index={index} />
+            ))}
         </div>
     );
 }
