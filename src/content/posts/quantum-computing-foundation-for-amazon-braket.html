@@ -1,0 +1,50 @@
+
+<p>So at first when you read the title, you must be wondering did he make a misspelling or is Amazon made the misspelling by naming their quantum computing service as Amazon Braket instead of “Bracket”, the answer lies in the very foundation of quantum mechanics.</p>
+<p>In 1939, physicist Paul Dirac introduced a standard mathematical language to describe quantum states. He called it <strong>bra-ket notation</strong>. It uses angle brackets and vertical bars to represent the state of a quantum system. The left half is called the “bra” (written as ⟨ϕ∣), and the right half is the “ket” (written as ∣ψ⟩). When you put them together to calculate a probability amplitude, you get a “bra-ket”:</p>
+<p>⟨ϕ∣ψ⟩</p>
+<p>It is an incredible physics pun, but it also perfectly highlights a crucial reality. Just as the math behind quantum mechanics looks entirely different from classical algebra, a quantum computer operate on a fundamentally different plane of existence than the machine you’re reading this on. </p>
+<h1>Bits vs. Qubits: A Paradigm Shift</h1>
+<p>For decades, classical computing has been built on the binary “bit”. Every piece of software, from a simple calculator to advanced artificial intelligence, is ultimately processed as a massive sequence of 1s and 0s. A classical computer is like a person navigating a maze by running down one path, hitting a dead end, and turning back to try the next. It is incredibly fast, but strictly sequential.</p>
+<p>Quantum computing throws the binary rulebook out of the window by using “qubits”. Thanks to quantum properties like superposition, a qubit doesn’t have to be just a 0 or a 1. It can exist as both simultaneously. When you link multiple qubits together through entanglement, computational power doesn’t just increase, it scales exponentially. To return to our maze, a quantum computer doesn’t run down one path at a time. It acts like water flooding the entire maze, exploring every single possible route simultaneously.</p>
+<p>This architecture allows quantum computers to solve wildly complex problems - like simulating molecular structure for new drugs, or optimising global supply chains, that would take our most powerful classical supercomputers thousand of years to crack.</p>
+<h1>Superposition, Entanglement, and Interference: The Three Pillars of Quantum Power</h1>
+<h2>The Physics behind the power: Superposition and Entanglement</h2>
+<p>To understand why a quantum computer is so revolutionary, we have to look at the two core principle of quantum mechanics that give qubits their edge.</p>
+<ol>
+<li>Superposition: The spinning coin</li>
+</ol>
+<p>Think of a standard coin. A classical bit is like a coin sitting flat on a table. It is firmly either heads (1) or tails (0). It cannot be both.</p>
+<p>A qubit in superposition is like a spinning coin. While it is spinning in the air, it isn’t just heads or tails. It exist in a fluid, probable state of both simultaneously. It is only when you stop the coin - or “measure” the qubit - that it collapses into a definitive 1 or 0. This ability to hold multiple possibilities at once allows quantum algorithms to process a vast number of potential outcomes in a single operation, rather than checking them one by one.</p>
+<ol start="2">
+<li>Entanglement: Spooky Action at a Distance</li>
+</ol>
+<p>Superposition is powerful, but entanglement is where quantum computing gets its true horsepower. Albert Einstein famously referred to entanglement as “spooky action at a distance”</p>
+<p>When you entangle two qubits, their physical states become inextricably linked, regardless of how far apart they are. If you measure one entangled qubit and it collapses into a “1”, its partner will instantly react and collapses into a predictable state as well. They no longer act as individual spinning coins. They act as a single, unified quantum system.</p>
+<h3>The Exponential Explosion: How power Scales</h3>
+<p>So how does linking these qubits through entanglement lead to exponential scaling?</p>
+<p>It all comes down to how information is mapped</p>
+<p>Let’s look at a classical computer. If you have 2 classical bits, they can represent four possible combinations (00, 01, 10, 11), but they can only ever represent one of those states at any given moment.</p>
+<p>Now, look at entangled qubits in superposition:</p>
+<ul>
+<li>1 Qubit can represent 2 states simultaneously.</li>
+<li>2 Qubits can represent 4 states simultaneously.</li>
+<li>3 Qubits can represent 8 states simultaneously.</li>
+<li>10 Qubits can represent 1024 states simultaneously.</li>
+</ul>
+<p>Now there’s a pattern. Every time you add just one single, perfect entangled qubit, you absolutely double the computational processing space. It scales as <strong>2ⁿ</strong> — a number that rapidly exceeds anything classical hardware can represent.</p>
+<p>By the time you reach just 300 perfectly entangled qubits, that system could simultaneously represent more values than there are atoms in the observable universe. A classical supercomputer the size of the planet Earth couldn’t even dream of holding that much memory. </p>
+<ol start="3">
+<li>Interference: Steering Towards the Right Answer</li>
+</ol>
+<p>Here is something the article on quantum computing often glosses over, superposition and entanglement alone don’t give you the answer. Without a third ingredient, a quantum computer would just collapse into a random result.</p>
+<p>That third ingredient is Quantum Interference.</p>
+<p>Just like waves of water, quantum probability waves can either reinforce each other (constructive interference) or cancel each other out (destructive interference). Quantum algorithms are carefully designed to amplify the probability paths that lead to correct answers, and suppress the paths that can lead to wrong ones. By the time you measure the qubits, the right answer has the highest probability of appearing.</p>
+<p>This is the mechanism that transform raw quantum parallelism into a useful computation. Superposition explores all paths. Entanglement links them. Interference eliminates the dead ends.</p>
+<h1>The Catch: Why we don’t have Quantum Laptops yet</h1>
+<p>Given the above, a natural question arises, if quantum computers are this powerful, why isn’t everyone using one?</p>
+<p>The answer is <strong>decoherence</strong>. Qubits are extraordinarily fragile. Any interaction with the surrounding environment like heat, vibration, electromagnetic noise, even a stray cosmic ray can disturb a qubit’s quantum state and cause it to collapse prematurely, corrupting the computation. Maintaining qubits in a coherent quantum state requires isolating them at temperatures colder than outer space (around 15 millikelvin, which is colder than deep space).</p>
+<p>This fragility means quantum computers today still have significant error rates, and much of the engineering efforts at companies like IBM, Google and AWS goes into quantum error correction, developing techniques to detect and fix errors without directly measuring (and thus collapsing) the qubits themselves.</p>
+<p>This is exactly why services like <strong>Amazon Braket</strong> are so valuable. Rather than building and maintaining this extraordinarily complex physical infrastructure yourself, Braket gives developers and researchers cloud-based access to real quantum hardware from multiple providers — alongside quantum circuit simulators — so they can start experimenting with quantum algorithms today, as the hardware continues to mature.</p>
+<h1>Bringing It to Your AWS Console</h1>
+<p>Amazon Braket abstracts away the staggering complexity of cryogenic hardware and quantum error management, and presents it through a familiar cloud interface. Whether you are a researcher simulating molecular chemistry, a financial analyst exploring quantum optimisation, or a developer curious about the next frontier of computation — Braket puts the power of 2ⁿ within reach of an AWS account.</p>
+<p>The name is not a typo. It is a 90-year-old physics joke — and a fitting one. Just as Dirac&#39;s bra-ket notation redefined how we describe the quantum world, Amazon Braket is redefining how we compute within it.</p>

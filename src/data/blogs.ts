@@ -9,6 +9,18 @@ export interface BlogPost {
 
 export const blogs: BlogPost[] = [
     {
+        "title": "Quantum Computing Foundation for Amazon Braket",
+        "slug": "quantum-computing-foundation-for-amazon-braket",
+        "date": "March 26, 2026",
+        "excerpt": "So at first when you read the title, you must be wondering did he make a misspelling or is Amazon made the misspelling by naming their quantum computing service as Amazon Braket instead of “Bracket”, the answer lies in the very foundation of quantum mechanics.",
+        "readTime": "4 min read",
+        "tags": [
+            "Tech",
+            "Quantum Computing",
+            "AWS"
+        ]
+    },
+    {
         "title": "How to connect with an Ethernet/IP and CIP",
         "slug": "how-to-connect-with-an-ethernetip-and-cip",
         "date": "March 12, 2026",
